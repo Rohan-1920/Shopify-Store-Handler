@@ -45,37 +45,37 @@ interface StatusBadgeProps {
 }
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, customText }) => {
-  // Shopify Polaris Badge Configurations
+  // XORA Badge Configurations (High contrast for light application canvas)
   const getConfig = () => {
     switch (status) {
-      // 1. Success / Done / Fulfilled (Shopify Polaris Green: #008060 / #00a47c)
+      // 1. Success / Done / Fulfilled (XORA Parrot Green: #00a878 / #007a57)
       case 'synced':
         return {
           label: customText || 'Synced',
-          bg: 'rgba(0, 128, 96, 0.12)',
-          border: 'rgba(0, 128, 96, 0.3)',
-          color: '#00a47c',
-          dotColor: '#00a47c',
+          bg: 'var(--xora-success-light, #e6f6f1)',
+          border: 'var(--xora-success-border, rgba(0, 168, 120, 0.25))',
+          color: '#007a57',
+          dotColor: '#00a878',
           dotPulse: false,
           Icon: CheckCircle2
         };
       case 'eligible':
         return {
           label: customText || 'Eligible',
-          bg: 'rgba(0, 128, 96, 0.12)',
-          border: 'rgba(0, 128, 96, 0.3)',
-          color: '#00a47c',
-          dotColor: '#00a47c',
+          bg: 'var(--xora-success-light, #e6f6f1)',
+          border: 'var(--xora-success-border, rgba(0, 168, 120, 0.25))',
+          color: '#007a57',
+          dotColor: '#00a878',
           dotPulse: false,
           Icon: Sparkles
         };
       case 'approved':
         return {
           label: customText || 'Approved',
-          bg: 'rgba(0, 128, 96, 0.12)',
-          border: 'rgba(0, 128, 96, 0.3)',
-          color: '#00a47c',
-          dotColor: '#00a47c',
+          bg: 'var(--xora-success-light, #e6f6f1)',
+          border: 'var(--xora-success-border, rgba(0, 168, 120, 0.25))',
+          color: '#007a57',
+          dotColor: '#00a878',
           dotPulse: false,
           Icon: Check
         };
@@ -83,52 +83,52 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, customText }) 
       case 'ready':
         return {
           label: customText || (status === 'ready' ? 'Ready' : 'Completed'),
-          bg: 'rgba(0, 128, 96, 0.12)',
-          border: 'rgba(0, 128, 96, 0.3)',
-          color: '#00a47c',
-          dotColor: '#00a47c',
+          bg: 'var(--xora-success-light, #e6f6f1)',
+          border: 'var(--xora-success-border, rgba(0, 168, 120, 0.25))',
+          color: '#007a57',
+          dotColor: '#00a878',
           dotPulse: false,
           Icon: Video
         };
       case 'pushed_to_shopify':
         return {
           label: customText || 'Pushed to Shopify',
-          bg: 'rgba(0, 128, 96, 0.12)',
-          border: 'rgba(0, 128, 96, 0.3)',
-          color: '#00a47c',
-          dotColor: '#00a47c',
+          bg: 'var(--xora-success-light, #e6f6f1)',
+          border: 'var(--xora-success-border, rgba(0, 168, 120, 0.25))',
+          color: '#007a57',
+          dotColor: '#00a878',
           dotPulse: false,
           Icon: ExternalLink
         };
 
-      // 2. Warning / Attention / In Review (Polaris Amber: #ffc453)
+      // 2. Warning / Attention / In Review (Amber / Gold: #8a6100)
       case 'pending':
         return {
           label: customText || 'Pending',
-          bg: 'rgba(255, 196, 83, 0.12)',
-          border: 'rgba(255, 196, 83, 0.3)',
-          color: '#ffc453',
-          dotColor: '#ffc453',
+          bg: 'var(--xora-warning-light, #fff8e6)',
+          border: 'var(--xora-warning-border, #ffe082)',
+          color: '#8a6100',
+          dotColor: '#d97706',
           dotPulse: true,
           Icon: Clock
         };
       case 'queued':
         return {
           label: customText || 'Queued',
-          bg: 'rgba(255, 196, 83, 0.12)',
-          border: 'rgba(255, 196, 83, 0.3)',
-          color: '#ffc453',
-          dotColor: '#ffc453',
+          bg: 'var(--xora-warning-light, #fff8e6)',
+          border: 'var(--xora-warning-border, #ffe082)',
+          color: '#8a6100',
+          dotColor: '#d97706',
           dotPulse: true,
           Icon: Clock
         };
       case 'needs_review':
         return {
           label: customText || 'Needs Review',
-          bg: 'rgba(255, 196, 83, 0.12)',
-          border: 'rgba(255, 196, 83, 0.3)',
-          color: '#ffc453',
-          dotColor: '#ffc453',
+          bg: 'var(--xora-warning-light, #fff8e6)',
+          border: 'var(--xora-warning-border, #ffe082)',
+          color: '#8a6100',
+          dotColor: '#d97706',
           dotPulse: true,
           Icon: AlertCircle
         };
@@ -136,64 +136,64 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, customText }) 
       case 'unsupported_category':
         return {
           label: customText || (status === 'unsupported_category' ? 'Unsupported Category' : 'Needs Hi-Res Images'),
-          bg: 'rgba(255, 196, 83, 0.12)',
-          border: 'rgba(255, 196, 83, 0.3)',
-          color: '#ffc453',
-          dotColor: '#ffc453',
+          bg: 'var(--xora-warning-light, #fff8e6)',
+          border: 'var(--xora-warning-border, #ffe082)',
+          color: '#8a6100',
+          dotColor: '#d97706',
           dotPulse: false,
           Icon: Image
         };
 
-      // 3. Info / Draft / In Progress (Polaris Light Blue: #b4e1fa)
+      // 3. Info / Draft / In Progress (Sky Blue: #0284c7)
       case 'draft':
         return {
           label: customText || 'Draft',
-          bg: 'rgba(180, 225, 250, 0.12)',
-          border: 'rgba(180, 225, 250, 0.3)',
-          color: '#b4e1fa',
-          dotColor: '#b4e1fa',
+          bg: 'var(--xora-info-light, #ebf5fb)',
+          border: 'var(--xora-info-border, #b4d4f5)',
+          color: '#0284c7',
+          dotColor: '#0284c7',
           dotPulse: false,
           Icon: Edit3
         };
       case 'rendering':
         return {
           label: customText || 'Rendering',
-          bg: 'rgba(180, 225, 250, 0.12)',
-          border: 'rgba(180, 225, 250, 0.3)',
-          color: '#b4e1fa',
-          dotColor: '#b4e1fa',
+          bg: 'var(--xora-info-light, #ebf5fb)',
+          border: 'var(--xora-info-border, #b4d4f5)',
+          color: '#0284c7',
+          dotColor: '#0284c7',
           dotSpin: true,
           Icon: Cpu
         };
       case 'stitching':
         return {
           label: customText || 'Stitching',
-          bg: 'rgba(180, 225, 250, 0.12)',
-          border: 'rgba(180, 225, 250, 0.3)',
-          color: '#b4e1fa',
-          dotColor: '#b4e1fa',
+          bg: 'var(--xora-info-light, #ebf5fb)',
+          border: 'var(--xora-info-border, #b4d4f5)',
+          color: '#0284c7',
+          dotColor: '#0284c7',
           dotSpin: true,
           Icon: Film
         };
       case 'syncing':
         return {
           label: customText || 'Syncing',
-          bg: 'rgba(180, 225, 250, 0.12)',
-          border: 'rgba(180, 225, 250, 0.3)',
-          color: '#b4e1fa',
-          dotColor: '#b4e1fa',
+          bg: 'var(--xora-info-light, #ebf5fb)',
+          border: 'var(--xora-info-border, #b4d4f5)',
+          color: '#0284c7',
+          dotColor: '#0284c7',
           dotSpin: true,
           Icon: RefreshCw
         };
 
-      // 4. Critical / Failure / Unfulfilled (Polaris Red: #d82c0d / #f87171)
+      // 4. Critical / Failure / Unfulfilled (Red: #d82c0d)
       case 'failed':
       case 'error':
         return {
           label: customText || 'Failed',
-          bg: 'rgba(216, 44, 13, 0.12)',
-          border: 'rgba(216, 44, 13, 0.3)',
-          color: '#f87171',
+          bg: 'var(--xora-critical-light, #fde8e8)',
+          border: 'var(--xora-critical-border, #f5c2c0)',
+          color: '#d82c0d',
           dotColor: '#d82c0d',
           dotPulse: false,
           Icon: AlertCircle
@@ -201,9 +201,9 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, customText }) 
       case 'rejected':
         return {
           label: customText || 'Rejected',
-          bg: 'rgba(216, 44, 13, 0.12)',
-          border: 'rgba(216, 44, 13, 0.3)',
-          color: '#f87171',
+          bg: 'var(--xora-critical-light, #fde8e8)',
+          border: 'var(--xora-critical-border, #f5c2c0)',
+          color: '#d82c0d',
           dotColor: '#d82c0d',
           dotPulse: false,
           Icon: XCircle
@@ -216,10 +216,10 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, customText }) 
       default:
         return {
           label: customText || (status === 'ineligible' ? 'Ineligible' : status === 'cancelled' ? 'Cancelled' : status === 'not_generated' ? 'Not Generated' : status),
-          bg: 'rgba(140, 145, 150, 0.12)',
-          border: 'rgba(140, 145, 150, 0.25)',
-          color: '#8c9196',
-          dotColor: '#8c9196',
+          bg: 'var(--xora-surface-subtle, #eef0ef)',
+          border: 'var(--xora-border, #e4e7e5)',
+          color: '#5f6361',
+          dotColor: '#7a7f7c',
           dotPulse: false,
           Icon: status === 'ineligible' || status === 'cancelled' ? XCircle : HelpCircle
         };

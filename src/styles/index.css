@@ -1,51 +1,77 @@
-/* XORA AI E-Commerce Creative Automation Platform - Design System Tokens */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  /* Official Shopify Polaris Color System Tokens */
-  --p-color-bg-app: #0c0d0e;
-  --p-color-bg-surface: #1a1a1a;
-  --p-color-bg-surface-hover: #252525;
-  --p-color-border: #303030;
-  --p-color-border-hover: #424242;
-  --p-color-primary: #008060;
-  --p-color-primary-hover: #00a47c;
-  --p-color-primary-surface: rgba(0, 128, 96, 0.12);
-  --p-color-primary-border: rgba(0, 128, 96, 0.3);
-  --p-color-text: #f1f1f1;
-  --p-color-text-subdued: #8c9196;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Bebas Neue', 'Inter', sans-serif;
 
-  /* Legacy Mapping for Complete Backward Compatibility */
-  --xora-primary: #008060;
-  --xora-primary-hover: #00a47c;
-  --xora-primary-light: rgba(0, 128, 96, 0.12);
-  --xora-primary-border: rgba(0, 128, 96, 0.3);
+  /* XORA Centralized Theme Tokens: Black Header + White Application Canvas + Parrot Green Accent */
+  /* XORA Centralized Theme Tokens: Black Header + White Application Canvas + Parrot Green Accent */
+  --xora-black: #0c0d0e;
+  --xora-green: #00a878;
+  --xora-green-hover: #009066;
+  --xora-green-active: #007a57;
+  --xora-green-subtle: rgba(0, 168, 120, 0.10);
+  --xora-green-light: #e6f6f1;
+  --xora-green-border: rgba(0, 168, 120, 0.25);
 
-  --xora-bg-app: #0c0d0e;
-  --xora-surface: #1a1a1a;
-  --xora-surface-hover: #252525;
-  
+  /* Primary Application Canvas (White + Light Neutrals) */
+  --xora-bg-app: #f8f9f8;
+  --xora-surface: #ffffff;
+  --xora-surface-hover: #f4f5f4;
+  --xora-surface-subtle: #eef0ef;
+
+  /* Header System (Obsidian Dark) */
   --xora-header-bg: #0c0d0e;
   --xora-header-border: #303030;
-  --xora-header-text: #f1f1f1;
-  --xora-header-text-muted: #8c9196;
+  --xora-header-text: #f1f5f3;
+  --xora-header-text-muted: #8e9390;
 
-  --xora-text-primary: #f1f1f1;
-  --xora-text-secondary: #cccccc;
-  --xora-text-muted: #8c9196;
+  /* Typography & High-Contrast Light Workspace Hierarchy */
+  --xora-text-primary: #161817;
+  --xora-text-secondary: #5f6361;
+  --xora-text-muted: #7a7f7c;
 
-  --xora-border: #303030;
-  --xora-border-subtle: #262626;
+  /* Restrained Border System */
+  --xora-border: #e4e7e5;
+  --xora-border-subtle: #eff1ef;
+  --xora-border-strong: #d1d5d3;
+  --xora-disabled: #a5aaa7;
 
+  /* Polaris & Legacy Tokens Mapping */
+  --p-color-bg-app: var(--xora-bg-app);
+  --p-color-bg-surface: var(--xora-surface);
+  --p-color-bg-surface-hover: var(--xora-surface-hover);
+  --p-color-border: var(--xora-border);
+  --p-color-border-hover: var(--xora-border-strong);
+  --p-color-primary: var(--xora-green);
+  --p-color-primary-hover: var(--xora-green-hover);
+  --p-color-primary-surface: var(--xora-green-subtle);
+  --p-color-primary-border: var(--xora-green-border);
+  --p-color-text: var(--xora-text-primary);
+  --p-color-text-subdued: var(--xora-text-muted);
+
+  --xora-primary: #00a878;
+  --xora-primary-hover: #009066;
+  --xora-primary-light: rgba(0, 168, 120, 0.10);
+  --xora-primary-border: rgba(0, 168, 120, 0.25);
+
+  /* Semantic Status Color System */
   --xora-critical: #d82c0d;
-  --xora-critical-light: rgba(216, 44, 13, 0.12);
-  --xora-warning: #ffc453;
-  --xora-warning-light: rgba(255, 196, 83, 0.12);
-  --xora-warning-text: #ffc453;
-  --xora-info: #b4e1fa;
-  --xora-info-light: rgba(180, 225, 250, 0.12);
-  --xora-success: #008060;
-  --xora-success-light: rgba(0, 128, 96, 0.12);
+  --xora-critical-light: #fde8e8;
+  --xora-critical-border: #f5c2c0;
+
+  --xora-warning: #8a6100;
+  --xora-warning-light: #fff8e6;
+  --xora-warning-border: #ffe082;
+  --xora-warning-text: #8a6100;
+
+  --xora-info: #0284c7;
+  --xora-info-light: #ebf5fb;
+  --xora-info-border: #b4d4f5;
+
+  --xora-success: #00a878;
+  --xora-success-light: rgba(0, 168, 120, 0.10);
+  --xora-success-border: rgba(0, 168, 120, 0.25);
 
   /* Spacing Scale (4px base) */
   --space-1: 4px;
@@ -59,7 +85,7 @@
   --space-12: 48px;
   --space-16: 64px;
 
-  /* Polaris Radius Standards: 8px buttons/badges & 12px cards/modals */
+  /* Radius Standards */
   --radius-input: 8px;
   --radius-badge: 9999px;
   --radius-btn: 8px;
@@ -68,11 +94,11 @@
   --radius-modal: 12px;
   --radius-full: 9999px;
 
-  /* Restrained Elevation & Shadows */
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-modal: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.7);
-  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.7);
+  /* Elevation & Shadows */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-modal: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
 
   /* Animation & Transitions */
   --transition-fast: 150ms ease;
@@ -428,15 +454,15 @@ button, input, select, textarea {
 }
 
 .nav-item:hover {
-  background-color: #252525;
-  color: var(--p-color-text);
+  background-color: var(--xora-surface-hover);
+  color: var(--xora-text-primary);
 }
 
 .nav-item.active {
-  background-color: rgba(0, 128, 96, 0.15);
-  color: #00a47c;
+  background-color: var(--xora-green-subtle);
+  color: var(--xora-green);
   font-weight: 600;
-  border-left-color: #008060;
+  border-left-color: var(--xora-green);
 }
 
 .nav-item.active::before {
@@ -446,14 +472,13 @@ button, input, select, textarea {
   top: 6px;
   bottom: 6px;
   width: 3px;
-  background-color: #008060;
+  background-color: var(--xora-green);
   border-radius: 0 3px 3px 0;
-  box-shadow: 0 0 8px rgba(0, 128, 96, 0.6);
 }
 
 .nav-counter {
   margin-left: auto;
-  background-color: var(--xora-surface-hover);
+  background-color: var(--xora-surface-subtle);
   color: var(--xora-text-secondary);
   font-size: 11px;
   font-weight: 600;
@@ -462,7 +487,7 @@ button, input, select, textarea {
 }
 
 .nav-item.active .nav-counter {
-  background-color: var(--xora-primary);
+  background-color: var(--xora-green);
   color: white;
 }
 
@@ -507,6 +532,7 @@ button, input, select, textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: var(--xora-surface);
 }
 
 .xora-card-title {
@@ -524,7 +550,7 @@ button, input, select, textarea {
 
 .xora-card-footer {
   padding: 14px var(--space-5);
-  background-color: var(--xora-bg-app);
+  background-color: var(--xora-surface-hover);
   border-top: 1px solid var(--xora-border-subtle);
   display: flex;
   align-items: center;
@@ -557,16 +583,19 @@ button, input, select, textarea {
 }
 
 .btn-primary {
-  background-color: #008060;
+  background-color: var(--xora-green);
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.3);
+  border: 1px solid transparent;
+  box-shadow: var(--shadow-sm);
   font-weight: 600;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: #00a47c;
-  border-color: rgba(255, 255, 255, 0.15);
+  background-color: var(--xora-green-hover);
+}
+
+.btn-primary:active:not(:disabled) {
+  background-color: var(--xora-green-active);
 }
 
 .btn-secondary {
@@ -576,18 +605,18 @@ button, input, select, textarea {
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background-color: var(--xora-bg-app);
-  border-color: var(--xora-text-muted);
+  background-color: var(--xora-surface-hover);
+  border-color: var(--xora-border-strong);
 }
 
 .btn-tertiary {
   background-color: transparent;
-  color: var(--xora-primary);
+  color: var(--xora-green);
   border-color: transparent;
 }
 
 .btn-tertiary:hover:not(:disabled) {
-  background-color: var(--xora-primary-light);
+  background-color: var(--xora-green-subtle);
 }
 
 .btn-destructive {
@@ -1420,6 +1449,144 @@ textarea:focus-visible {
     content: attr(data-label);
   }
 }
+
+/* Bebas Neue & Public Landing Page Typography & Utilities */
+.font-bebas {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  letter-spacing: 0.5px;
+}
+
+.text-bebas-hero {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 64px;
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+  .text-bebas-hero {
+    font-size: 42px;
+  }
+}
+
+.bebas-badge {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.landing-section {
+  padding: 80px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .landing-section {
+    padding: 48px 16px;
+  }
+}
+
+.landing-card-flat {
+  background-color: var(--xora-surface);
+  border: 1px solid var(--xora-border);
+  border-radius: 12px;
+  padding: 28px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.landing-card-flat:hover {
+  border-color: var(--xora-border-strong);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* Paper Canvas & Commerce Sketch Texture System */
+.paper-canvas {
+  background-color: #ffffff;
+  color: var(--xora-text-primary, #161817);
+  position: relative;
+}
+
+.paper-canvas-subtle {
+  background-color: #f9faf9;
+  color: var(--xora-text-primary, #161817);
+  position: relative;
+}
+
+.sketch-bg-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sketch-svg-accent {
+  position: absolute;
+  opacity: 0.035;
+  color: #161817;
+  pointer-events: none;
+  user-select: none;
+  stroke-width: 1;
+}
+
+@media (max-width: 768px) {
+  .sketch-bg-container {
+    display: none; /* Hide background sketch artwork on mobile screens for zero distraction */
+  }
+}
+
+/* Speed Breaker Car Physics Hover Effect & Parrot Glow System */
+.speed-breaker-btn {
+  transition: transform 0.42s cubic-bezier(0.34, 1.65, 0.64, 1), 
+              box-shadow 0.42s cubic-bezier(0.34, 1.65, 0.64, 1), 
+              background-color 0.2s ease,
+              border-color 0.2s ease !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.speed-breaker-btn:hover {
+  transform: translateY(-4px) scale(1.03) !important;
+  box-shadow: 0 10px 30px rgba(0, 168, 120, 0.35), 0 0 20px rgba(0, 168, 120, 0.22) !important;
+}
+
+.speed-breaker-btn:active {
+  transform: translateY(1px) scale(0.98) !important;
+  box-shadow: 0 2px 8px rgba(0, 168, 120, 0.2) !important;
+}
+
+/* Speed Breaker Effect for Nav Links */
+.speed-breaker-nav {
+  transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              color 0.2s ease,
+              text-shadow 0.3s ease !important;
+  position: relative;
+}
+
+.speed-breaker-nav:hover {
+  transform: translateY(-3px) scale(1.04) !important;
+  color: var(--xora-green, #00a878) !important;
+  text-shadow: 0 4px 12px rgba(0, 168, 120, 0.25);
+}
+
+/* Amazing Header Glass Halo Container */
+.header-glass-halo {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(0, 168, 120, 0.2);
+  border-radius: 9999px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 6px 30px rgba(0, 168, 120, 0.12), 0 2px 10px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.header-glass-halo:hover {
+  border-color: rgba(0, 168, 120, 0.4);
+  box-shadow: 0 8px 36px rgba(0, 168, 120, 0.22), 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
 
 
 

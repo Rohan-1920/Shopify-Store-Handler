@@ -18,6 +18,7 @@ import { RenderingView } from './features/rendering/RenderingView';
 import { VideoLibraryView } from './features/videos/VideoLibraryView';
 import { AnalyticsView } from './features/analytics/AnalyticsView';
 import { SettingsView } from './features/settings/SettingsView';
+import { LandingView } from './features/landing/LandingView';
 
 import { 
   initialStoreContext, 
@@ -33,6 +34,8 @@ import {
 import type { ActiveTab, ShopifyProduct, CreativeDraft, RenderJob, VideoAsset, NotificationItem } from './types';
 
 export function App() {
+  const [viewMode, setViewMode] = useState<'landing' | 'app'>('landing');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [storeContext, setStoreContext] = useState(initialStoreContext);
   const [creditBalance, setCreditBalance] = useState(initialCreditBalance);
@@ -273,6 +276,30 @@ export function App() {
     addToast('info', 'Marked all notifications as read.');
   };
 
+  if (viewMode === 'landing') {
+    return (
+      <LandingView
+        isAuthenticated={isAuthenticated}
+        onAuthenticate={(email) => {
+          setIsAuthenticated(true);
+          addToast('success', `Authenticated as ${email}`);
+        }}
+        onConnectStore={(domain) => {
+          setStoreContext((prev) => ({
+            ...prev,
+            domain,
+            storeName: domain.split('.')[0]
+              .split('-')
+              .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+              .join(' ')
+          }));
+          addToast('success', `Connected Shopify store catalog (${domain})`);
+        }}
+        onEnterApp={() => setViewMode('app')}
+      />
+    );
+  }
+
   return (
     <div className="app-shell">
       {/* Dark Header */}
@@ -285,6 +312,7 @@ export function App() {
         onToggleMobileMenu={() => setMobileDrawerOpen(!mobileDrawerOpen)}
         onNavigate={setActiveTab}
         unreadCount={notifications.filter((n) => !n.read).length}
+        onNavigateToLanding={() => setViewMode('landing')}
       />
 
       {/* Mobile Drawer (Screens < 768px) */}

@@ -26,6 +26,7 @@ interface HeaderProps {
   onToggleMobileMenu: () => void;
   onNavigate: (tab: ActiveTab) => void;
   unreadCount: number;
+  onNavigateToLanding?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -36,7 +37,8 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenHelp,
   onToggleMobileMenu,
   onNavigate,
-  unreadCount
+  unreadCount,
+  onNavigateToLanding
 }) => {
   const [showStoreDropdown, setShowStoreDropdown] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
@@ -55,7 +57,12 @@ export const Header: React.FC<HeaderProps> = ({
           <Menu size={20} />
         </button>
 
-        <div className="brand-badge" style={{ backgroundColor: '#008060' }}>
+        <div 
+          className="brand-badge" 
+          onClick={onNavigateToLanding}
+          style={{ backgroundColor: 'var(--xora-green, #00a878)', cursor: onNavigateToLanding ? 'pointer' : 'default' }}
+          title="Back to Public Landing Page"
+        >
           <Sparkles size={16} style={{ marginRight: '6px' }} />
           XORA
         </div>
@@ -72,13 +79,13 @@ export const Header: React.FC<HeaderProps> = ({
               setShowProfileDropdown(false);
             }}
           >
-            <Store size={15} style={{ color: '#00a47c' }} />
+            <Store size={15} style={{ color: 'var(--xora-green, #00a878)' }} />
             <span style={{ color: '#ffffff', fontWeight: 600 }}>{storeContext.storeName}</span>
             <span style={{ 
               width: '6px', 
               height: '6px', 
               borderRadius: '50%', 
-              backgroundColor: '#00a47c',
+              backgroundColor: 'var(--xora-green, #00a878)',
               display: 'inline-block'
             }} />
             <ChevronDown size={14} style={{ color: 'var(--xora-header-text-muted)' }} />

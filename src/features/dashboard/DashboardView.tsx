@@ -49,7 +49,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   // Real Counts & Production Pipeline Metrics (No fake numbers)
   const totalProductsCount = products.length;
-  const eligibleProductsCount = products.filter(p => p.syncStatus === 'eligible' || p.syncStatus === 'synced').length;
+  const eligibleProductsCount = products.filter(p => p.aiEligibility === 'eligible').length;
   const awaitingReviewCount = drafts.filter(d => d.status === 'draft').length;
   const activeRenderingCount = renderJobs.filter(j => j.status === 'rendering' || j.status === 'queued').length;
   const videosReadyCount = videos.length;
@@ -59,13 +59,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   // Dynamic Contextual Next Action Engine based on actual application state
   const getPrimaryAction = () => {
-    if (!storeContext.isConnected) {
-      return {
-        label: 'Connect Shopify Store',
-        tab: 'settings' as ActiveTab,
-        icon: Store
-      };
-    }
     if (products.length === 0) {
       return {
         label: 'Sync Product Catalog',
@@ -178,47 +171,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     );
   }
 
-  // Disconnected First-Time Experience State
-  if (!storeContext.isConnected) {
-    return (
-      <div style={{ padding: '60px 0', maxWidth: '620px', margin: '0 auto', textAlign: 'center' }}>
-        <div className="xora-card" style={{ padding: '48px 36px', backgroundColor: '#1a1a1a', border: '1px solid #303030' }}>
-          <div style={{
-            width: '64px',
-            height: '64px',
-            borderRadius: '50%',
-            backgroundColor: 'rgba(0, 128, 96, 0.15)',
-            border: '1px solid rgba(0, 128, 96, 0.3)',
-            color: '#00a47c',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '20px'
-          }}>
-            <Store size={32} />
-          </div>
-          
-          <h2 style={{ fontSize: '22px', fontWeight: 700, color: '#f1f1f1', marginBottom: '10px' }}>
-            XORA turns your Shopify product catalog into AI-assisted marketing video creatives at scale.
-          </h2>
-          
-          <p style={{ fontSize: '14px', color: '#8c9196', lineHeight: 1.6, marginBottom: '28px' }}>
-            Connect your store to sync product titles, images, and prices. Generate 3-angle marketing drafts across Benefit, Social Proof, and Urgency angles with human approval guardrails.
-          </p>
 
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
-            <button 
-              className="btn btn-primary btn-lg"
-              onClick={() => onNavigate('settings')}
-              style={{ padding: '12px 28px', fontSize: '15px' }}
-            >
-              <Store size={18} /> Connect Shopify Store
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div>
