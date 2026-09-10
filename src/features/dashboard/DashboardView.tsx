@@ -46,57 +46,110 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [isStoreConnected, setIsStoreConnected] = useState(true);
 
-  // Counts & Pipeline Metrics
-  const totalProductsCount = products.length > 0 ? 1248 : 0;
-  const eligibleProductsCount = products.length > 0 ? 982 : 0;
-  const awaitingReviewCount = drafts.filter(d => d.status === 'draft').length || 148;
-  const activeRenderingCount = renderJobs.filter(j => j.status === 'rendering' || j.status === 'queued').length || 36;
-  const videosReadyCount = videos.length > 0 ? 2840 : 0;
+  // Real Counts & Production Pipeline Metrics (No fake numbers)
+  const totalProductsCount = products.length;
+  const eligibleProductsCount = products.filter(p => p.syncStatus === 'eligible' || p.syncStatus === 'synced').length;
+  const awaitingReviewCount = drafts.filter(d => d.status === 'draft').length;
+  const activeRenderingCount = renderJobs.filter(j => j.status === 'rendering' || j.status === 'queued').length;
+  const videosReadyCount = videos.length;
 
-  const pendingDrafts = drafts.filter(d => d.status === 'draft').slice(0, 3);
-  const activeJobs = renderJobs.slice(0, 3);
+  const pendingDrafts = drafts.filter(d => d.status === 'draft').slice(0, 4);
+  const activeJobs = renderJobs.slice(0, 4);
+
+  // Dynamic Contextual Next Action Engine based on actual application state
+  const getPrimaryAction = () => {
+    if (!storeContext.isConnected) {
+      return {
+        label: 'Connect Shopify Store',
+        tab: 'settings' as ActiveTab,
+        icon: Store
+      };
+    }
+    if (products.length === 0) {
+      return {
+        label: 'Sync Product Catalog',
+        tab: 'products' as ActiveTab,
+        icon: RefreshCw
+      };
+    }
+    if (awaitingReviewCount > 0) {
+      return {
+        label: `Review ${awaitingReviewCount} Creative Approvals`,
+        tab: 'approvals' as ActiveTab,
+        icon: CheckSquare
+      };
+    }
+    if (activeRenderingCount > 0) {
+      return {
+        label: `View ${activeRenderingCount} Active Rendering Jobs`,
+        tab: 'rendering' as ActiveTab,
+        icon: Cpu
+      };
+    }
+    if (drafts.length === 0 && products.length > 0) {
+      return {
+        label: 'Generate AI Creatives',
+        tab: 'creatives' as ActiveTab,
+        icon: Sparkles
+      };
+    }
+    if (videosReadyCount > 0) {
+      return {
+        label: `Open Video Library (${videosReadyCount})`,
+        tab: 'videos' as ActiveTab,
+        icon: Video
+      };
+    }
+    return {
+      label: 'Generate AI Creatives',
+      tab: 'creatives' as ActiveTab,
+      icon: Sparkles
+    };
+  };
+
+  const primaryAction = getPrimaryAction();
+  const ActionIcon = primaryAction.icon;
 
   // Recent operational activity stream
   const recentEvents = [
-    { id: 'e1', icon: RefreshCw, title: 'Product catalog synced', desc: '148 product items and images updated from Shopify.', time: '12m ago', color: 'var(--xora-primary)' },
-    { id: 'e2', icon: Sparkles, title: '24 creatives generated', desc: '3-angle draft scripts created for Aura Thermal Hoodie & Kettle.', time: '35m ago', color: '#8A6100' },
-    { id: 'e3', icon: CheckSquare, title: '12 creatives approved', desc: 'Merchant authorized script execution & Zvid credit dispatch.', time: '1h ago', color: 'var(--xora-primary)' },
-    { id: 'e4', icon: Cpu, title: 'Rendering started', desc: '120 videos dispatched to Zvid GPU scene render cluster.', time: '2h ago', color: 'var(--xora-info)' },
-    { id: 'e5', icon: AlertCircle, title: '3 rendering jobs failed', desc: 'Source resolution under 1080p threshold for Desk Mat.', time: '3h ago', color: 'var(--xora-critical)' },
+    { id: 'e1', icon: RefreshCw, title: 'Shopify catalog synced', desc: `${totalProductsCount} products & images available in catalog matrix.`, time: '12m ago', color: '#00a47c' },
+    { id: 'e2', icon: Sparkles, title: `${drafts.length} AI drafts generated`, desc: '3-angle marketing drafts generated across Benefit & Urgency angles.', time: '35m ago', color: '#ffc453' },
+    { id: 'e3', icon: CheckSquare, title: `${drafts.filter(d => d.status === 'approved').length} creatives approved`, desc: 'Merchant authorized script execution & Zvid credit dispatch.', time: '1h ago', color: '#00a47c' },
+    { id: 'e4', icon: Cpu, title: `${activeRenderingCount} jobs in render pipeline`, desc: 'Active Zvid GPU scene render & audio synthesis.', time: '2h ago', color: '#b4e1fa' },
+    { id: 'e5', icon: Video, title: `${videosReadyCount} MP4 videos in library`, desc: 'High resolution production videos ready for store deployment.', time: '3h ago', color: '#00a47c' },
   ];
 
-  // Inline Error Alert View
+  // Error State View
   if (hasError) {
     return (
       <div style={{ padding: '40px 0', maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
         <div style={{
           padding: '24px',
-          backgroundColor: 'var(--xora-critical-light)',
-          border: '1px solid var(--xora-critical)',
-          borderRadius: 'var(--radius-panel)',
+          backgroundColor: 'rgba(216, 44, 13, 0.12)',
+          border: '1px solid rgba(216, 44, 13, 0.3)',
+          borderRadius: 'var(--radius-modal)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           gap: '12px'
         }}>
-          <AlertCircle size={36} style={{ color: 'var(--xora-critical)' }} />
+          <AlertCircle size={36} style={{ color: '#f87171' }} />
           <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--xora-text-primary)' }}>
-            Unable to load dashboard data
+            Unable to load operational dashboard
           </h3>
           <p style={{ fontSize: '13.5px', color: 'var(--xora-text-secondary)' }}>
-            Please verify your Shopify store API connectivity or network connection and try again.
+            Please check your connectivity or reload the page to refresh catalog pipeline state.
           </p>
           <button 
             className="btn btn-primary"
             onClick={() => {
               setHasError(false);
               setIsLoading(true);
-              setTimeout(() => setIsLoading(false), 800);
+              setTimeout(() => setIsLoading(false), 600);
             }}
           >
-            <RefreshCw size={14} /> Retry Loading Dashboard
+            <RefreshCw size={14} /> Retry Loading
           </button>
         </div>
       </div>
@@ -118,136 +171,79 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div key={i} className="kpi-card">
               <div className="skeleton" style={{ width: '100px', height: '14px', marginBottom: '12px' }} />
               <div className="skeleton" style={{ width: '60px', height: '32px', marginBottom: '8px' }} />
-              <div className="skeleton" style={{ width: '120px', height: '12px' }} />
             </div>
           ))}
         </div>
-        <div className="skeleton" style={{ width: '100%', height: '120px', borderRadius: 'var(--radius-panel)', marginBottom: '24px' }} />
-        <div className="grid-2">
-          <div className="skeleton" style={{ width: '100%', height: '280px', borderRadius: 'var(--radius-panel)' }} />
-          <div className="skeleton" style={{ width: '100%', height: '280px', borderRadius: 'var(--radius-panel)' }} />
-        </div>
       </div>
     );
   }
 
-  // Disconnected Empty State
-  if (!isStoreConnected) {
+  // Disconnected First-Time Experience State
+  if (!storeContext.isConnected) {
     return (
-      <div style={{ padding: '60px 0', maxWidth: '560px', margin: '0 auto', textAlign: 'center' }}>
-        <div className="xora-card" style={{ padding: '40px 32px' }}>
+      <div style={{ padding: '60px 0', maxWidth: '620px', margin: '0 auto', textAlign: 'center' }}>
+        <div className="xora-card" style={{ padding: '48px 36px', backgroundColor: '#1a1a1a', border: '1px solid #303030' }}>
           <div style={{
-            width: '56px',
-            height: '56px',
+            width: '64px',
+            height: '64px',
             borderRadius: '50%',
-            backgroundColor: 'var(--xora-primary-light)',
-            color: 'var(--xora-primary)',
+            backgroundColor: 'rgba(0, 128, 96, 0.15)',
+            border: '1px solid rgba(0, 128, 96, 0.3)',
+            color: '#00a47c',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            marginBottom: '16px'
+            marginBottom: '20px'
           }}>
-            <Store size={28} />
+            <Store size={32} />
           </div>
-          <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--xora-text-primary)', marginBottom: '8px' }}>
-            Connect your Shopify store
+          
+          <h2 style={{ fontSize: '22px', fontWeight: 700, color: '#f1f1f1', marginBottom: '10px' }}>
+            XORA turns your Shopify product catalog into AI-assisted marketing video creatives at scale.
           </h2>
-          <p style={{ fontSize: '14px', color: 'var(--xora-text-secondary)', lineHeight: 1.5, marginBottom: '24px' }}>
-            Sync your product catalog to start creating AI-powered video ads across Benefit, Social Proof, and Urgency angles.
+          
+          <p style={{ fontSize: '14px', color: '#8c9196', lineHeight: 1.6, marginBottom: '28px' }}>
+            Connect your store to sync product titles, images, and prices. Generate 3-angle marketing drafts across Benefit, Social Proof, and Urgency angles with human approval guardrails.
           </p>
-          <button 
-            className="btn btn-primary btn-lg"
-            onClick={() => setIsStoreConnected(true)}
-            style={{ width: '100%' }}
-          >
-            <Sparkles size={18} /> Connect Shopify Store
-          </button>
+
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
+            <button 
+              className="btn btn-primary btn-lg"
+              onClick={() => onNavigate('settings')}
+              style={{ padding: '12px 28px', fontSize: '15px' }}
+            >
+              <Store size={18} /> Connect Shopify Store
+            </button>
+          </div>
         </div>
       </div>
     );
   }
-
-  // Connected but No Products Empty State
-  if (products.length === 0) {
-    return (
-      <div style={{ padding: '60px 0', maxWidth: '560px', margin: '0 auto', textAlign: 'center' }}>
-        <div className="xora-card" style={{ padding: '40px 32px' }}>
-          <div style={{
-            width: '56px',
-            height: '56px',
-            borderRadius: '50%',
-            backgroundColor: 'var(--xora-warning-light)',
-            color: '#8A6100',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '16px'
-          }}>
-            <ShoppingBag size={28} />
-          </div>
-          <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--xora-text-primary)', marginBottom: '8px' }}>
-            No products found
-          </h2>
-          <p style={{ fontSize: '14px', color: 'var(--xora-text-secondary)', lineHeight: 1.5, marginBottom: '24px' }}>
-            Your Shopify store is connected, but no product catalog items have been imported into the XORA matrix yet.
-          </p>
-          <button 
-            className="btn btn-primary"
-            onClick={() => onNavigate('products')}
-          >
-            <RefreshCw size={16} /> Sync Products Catalog
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Dynamic Primary Action based on pipeline state
-  const getPrimaryAction = () => {
-    if (awaitingReviewCount > 0) {
-      return {
-        label: `Review ${awaitingReviewCount} Creatives`,
-        tab: 'approvals' as ActiveTab,
-        icon: CheckSquare
-      };
-    }
-    if (activeRenderingCount > 0) {
-      return {
-        label: 'View Rendering Progress',
-        tab: 'rendering' as ActiveTab,
-        icon: Cpu
-      };
-    }
-    if (videosReadyCount > 0) {
-      return {
-        label: 'Open Video Library',
-        tab: 'videos' as ActiveTab,
-        icon: Video
-      };
-    }
-    return {
-      label: 'Generate Creatives',
-      tab: 'creatives' as ActiveTab,
-      icon: Sparkles
-    };
-  };
-
-  const primaryAction = getPrimaryAction();
-  const ActionIcon = primaryAction.icon;
 
   return (
     <div>
       {/* 1. Header Area with Store Connection Status & Dynamic Primary Action */}
-      <div className="page-header" style={{ marginBottom: '20px' }}>
+      <div className="page-header" style={{ marginBottom: '24px' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-            <h1 className="page-title">Dashboard</h1>
-            <span className="badge badge-success" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+            <h1 className="page-title" style={{ fontSize: '24px', fontWeight: 700 }}>Dashboard</h1>
+            <span style={{ 
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              gap: '6px', 
+              padding: '3px 10px', 
+              borderRadius: '9999px',
+              backgroundColor: 'rgba(0, 128, 96, 0.15)',
+              border: '1px solid rgba(0, 128, 96, 0.3)',
+              color: '#00a47c',
+              fontSize: '12px',
+              fontWeight: 600
+            }}>
               <CheckCircle2 size={12} /> {storeContext.storeName} Connected
             </span>
           </div>
-          <p className="page-subtitle">
-            Monitor your Shopify catalog, creative pipeline, rendering jobs, and video output.
+          <p className="page-subtitle" style={{ fontSize: '13.5px', color: 'var(--xora-text-muted)' }}>
+            Real-time status of your Shopify product matrix, creative pipeline, rendering operations, and video library.
           </p>
         </div>
 
@@ -261,80 +257,80 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </div>
 
-      {/* 2. KPI Row (5 Compact Cards) */}
+      {/* 2. KPI Metrics Grid (Strictly Real Operational Numbers) */}
       <div style={{ 
         display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', 
         gap: '12px', 
         marginBottom: '24px' 
       }}>
         <div className="kpi-card" onClick={() => onNavigate('products')} style={{ cursor: 'pointer' }}>
           <div className="kpi-header">
-            <span>Products</span>
+            <span>Products Synced</span>
             <ShoppingBag size={16} style={{ color: 'var(--xora-text-muted)' }} />
           </div>
-          <div className="kpi-value">{totalProductsCount.toLocaleString()}</div>
+          <div className="kpi-value">{totalProductsCount}</div>
           <div className="kpi-footer">
-            <span style={{ color: 'var(--xora-primary)', fontWeight: 600 }}>Synced</span> • 12m ago
+            <span style={{ color: '#00a47c', fontWeight: 600 }}>Active Catalog</span>
           </div>
         </div>
 
         <div className="kpi-card" onClick={() => onNavigate('products')} style={{ cursor: 'pointer' }}>
           <div className="kpi-header">
             <span>Eligible Products</span>
-            <Sparkles size={16} style={{ color: 'var(--xora-primary)' }} />
+            <Sparkles size={16} style={{ color: '#00a47c' }} />
           </div>
-          <div className="kpi-value">{eligibleProductsCount.toLocaleString()}</div>
+          <div className="kpi-value">{eligibleProductsCount}</div>
           <div className="kpi-footer">
-            <span style={{ color: 'var(--xora-primary)' }}>78%</span> of total catalog
+            <span style={{ color: '#00a47c' }}>{totalProductsCount > 0 ? Math.round((eligibleProductsCount / totalProductsCount) * 100) : 0}%</span> of total catalog
           </div>
         </div>
 
         <div className="kpi-card" onClick={() => onNavigate('approvals')} style={{ cursor: 'pointer' }}>
           <div className="kpi-header">
             <span>Awaiting Review</span>
-            <CheckSquare size={16} style={{ color: 'var(--xora-warning)' }} />
+            <CheckSquare size={16} style={{ color: '#ffc453' }} />
           </div>
           <div className="kpi-value">{awaitingReviewCount}</div>
           <div className="kpi-footer">
-            <span style={{ color: '#8A6100', fontWeight: 600 }}>Requires merchant review</span>
+            <span style={{ color: '#ffc453', fontWeight: 600 }}>Requires merchant review</span>
           </div>
         </div>
 
         <div className="kpi-card" onClick={() => onNavigate('rendering')} style={{ cursor: 'pointer' }}>
           <div className="kpi-header">
-            <span>Rendering</span>
-            <Cpu size={16} style={{ color: 'var(--xora-info)' }} />
+            <span>Rendering Active</span>
+            <Cpu size={16} style={{ color: '#b4e1fa' }} />
           </div>
           <div className="kpi-value">{activeRenderingCount}</div>
           <div className="kpi-footer">
-            <span style={{ color: 'var(--xora-info)', fontWeight: 600 }}>Active GPU cluster</span>
+            <span style={{ color: '#b4e1fa', fontWeight: 600 }}>Zvid engine cluster</span>
           </div>
         </div>
 
         <div className="kpi-card" onClick={() => onNavigate('videos')} style={{ cursor: 'pointer' }}>
           <div className="kpi-header">
             <span>Videos Ready</span>
-            <Video size={16} style={{ color: 'var(--xora-primary)' }} />
+            <Video size={16} style={{ color: '#00a47c' }} />
           </div>
-          <div className="kpi-value">{videosReadyCount.toLocaleString()}</div>
+          <div className="kpi-value">{videosReadyCount}</div>
           <div className="kpi-footer">
-            <span style={{ color: 'var(--xora-primary)', fontWeight: 600 }}>Available in library</span>
+            <span style={{ color: '#00a47c', fontWeight: 600 }}>Available in library</span>
           </div>
         </div>
       </div>
 
-      {/* 3. Operational Pipeline Stepper Overview */}
+      {/* 3. Operational Pipeline Stepper */}
       <div className="xora-card" style={{ marginBottom: '24px', padding: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Layers size={18} style={{ color: 'var(--xora-primary)' }} />
+            <Layers size={18} style={{ color: '#00a47c' }} />
             <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--xora-text-primary)' }}>
-              Creative Automation Pipeline Flow
+              Creative Automation Pipeline Status
             </h3>
           </div>
           <span style={{ fontSize: '12px', color: 'var(--xora-text-secondary)' }}>
-            Real-time status across 6 pipeline stages
+            Canonical 6-stage production sequence
           </span>
         </div>
 
@@ -343,7 +339,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="step-number">1</div>
             <div>
               <div style={{ fontWeight: 600, fontSize: '13px' }}>Shopify Sync</div>
-              <div style={{ fontSize: '11px', color: 'var(--xora-text-secondary)' }}>{totalProductsCount.toLocaleString()} items</div>
+              <div style={{ fontSize: '11px', color: 'var(--xora-text-secondary)' }}>{totalProductsCount} items</div>
             </div>
           </div>
           <div className="step-divider" />
@@ -361,7 +357,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="step-number">3</div>
             <div>
               <div style={{ fontWeight: 600, fontSize: '13px' }}>AI Drafts</div>
-              <div style={{ fontSize: '11px', color: 'var(--xora-text-secondary)' }}>280 generated</div>
+              <div style={{ fontSize: '11px', color: 'var(--xora-text-secondary)' }}>{drafts.length} generated</div>
             </div>
           </div>
           <div className="step-divider" />
@@ -370,7 +366,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="step-number">4</div>
             <div>
               <div style={{ fontWeight: 600, fontSize: '13px' }}>Approval</div>
-              <div style={{ fontSize: '11px', color: '#8A6100', fontWeight: 600 }}>{awaitingReviewCount} awaiting</div>
+              <div style={{ fontSize: '11px', color: '#ffc453', fontWeight: 600 }}>{awaitingReviewCount} awaiting</div>
             </div>
           </div>
           <div className="step-divider" />
@@ -379,7 +375,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="step-number">5</div>
             <div>
               <div style={{ fontWeight: 600, fontSize: '13px' }}>Rendering</div>
-              <div style={{ fontSize: '11px', color: 'var(--xora-info)' }}>{activeRenderingCount} active</div>
+              <div style={{ fontSize: '11px', color: '#b4e1fa' }}>{activeRenderingCount} active</div>
             </div>
           </div>
           <div className="step-divider" />
@@ -388,83 +384,90 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="step-number">6</div>
             <div>
               <div style={{ fontWeight: 600, fontSize: '13px' }}>Videos Ready</div>
-              <div style={{ fontSize: '11px', color: 'var(--xora-primary)' }}>{videosReadyCount.toLocaleString()} MP4s</div>
+              <div style={{ fontSize: '11px', color: '#00a47c' }}>{videosReadyCount} MP4s</div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 4. Main Operational Layout: Needs Review & Active Rendering */}
+      {/* 4. Operational Layout: Needs Your Attention & Activity Stream */}
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', marginBottom: '24px' }}>
-        {/* Left Column: Needs Your Review + Rendering Queue */}
+        {/* Left Column: Needs Your Review + Rendering Activity */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          {/* Approval Attention ("Needs your review") */}
+          {/* Approval Attention List */}
           <div className="xora-card">
             <div className="xora-card-header">
               <div className="xora-card-title">
-                <CheckSquare size={18} style={{ color: 'var(--xora-warning)' }} />
-                Needs Your Review ({awaitingReviewCount})
+                <CheckSquare size={18} style={{ color: '#ffc453' }} />
+                Needs Your Attention ({awaitingReviewCount} Pending Reviews)
               </div>
               <button className="btn btn-tertiary btn-sm" onClick={() => onNavigate('approvals')}>
-                Review All <ArrowRight size={13} />
+                Review Queue <ArrowRight size={13} />
               </button>
             </div>
             <div className="xora-card-body">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {pendingDrafts.map((draft) => {
-                  const hasWarning = draft.warnings && draft.warnings.length > 0;
-                  return (
-                    <div 
-                      key={draft.id}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '12px 14px',
-                        border: '1px solid var(--xora-border)',
-                        borderRadius: 'var(--radius-input)',
-                        backgroundColor: 'var(--xora-surface)'
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <img 
-                          src={draft.productImage} 
-                          alt={draft.productTitle} 
-                          style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-input)', objectFit: 'cover' }} 
-                        />
-                        <div>
-                          <div style={{ fontWeight: 600, fontSize: '13.5px', color: 'var(--xora-text-primary)', marginBottom: '2px' }}>
-                            {draft.productTitle}
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--xora-text-secondary)' }}>
-                            <span className="badge badge-neutral" style={{ fontSize: '11px' }}>
-                              {draft.angleName}
-                            </span>
-                            {hasWarning && (
-                              <span style={{ color: 'var(--xora-critical)', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '3px', fontWeight: 600 }}>
-                                <ShieldAlert size={12} /> Safety Warning
+              {pendingDrafts.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '24px 12px', color: 'var(--xora-text-muted)', fontSize: '13.5px' }}>
+                  <CheckCircle2 size={24} style={{ color: '#00a47c', marginBottom: '8px' }} />
+                  <div>All generated draft scripts have been reviewed and processed!</div>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {pendingDrafts.map((draft) => {
+                    const hasWarning = draft.warnings && draft.warnings.length > 0;
+                    return (
+                      <div 
+                        key={draft.id}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '12px 14px',
+                          border: '1px solid var(--xora-border)',
+                          borderRadius: 'var(--radius-input)',
+                          backgroundColor: 'var(--xora-surface)'
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <img 
+                            src={draft.productImage} 
+                            alt={draft.productTitle} 
+                            style={{ width: '44px', height: '44px', borderRadius: '6px', objectFit: 'cover' }} 
+                          />
+                          <div>
+                            <div style={{ fontWeight: 600, fontSize: '13.5px', color: 'var(--xora-text-primary)', marginBottom: '2px' }}>
+                              {draft.productTitle}
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--xora-text-secondary)' }}>
+                              <span className="badge badge-neutral" style={{ fontSize: '11px' }}>
+                                {draft.angleName}
                               </span>
-                            )}
+                              {hasWarning && (
+                                <span style={{ color: '#f87171', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '3px', fontWeight: 600 }}>
+                                  <ShieldAlert size={12} /> Claim Warning
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <StatusBadge status="needs_review" />
-                        <button 
-                          className="btn btn-primary btn-sm"
-                          onClick={() => {
-                            onQuickGenerate(draft.productId);
-                            onNavigate('approvals');
-                          }}
-                        >
-                          Review
-                        </button>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <StatusBadge status="needs_review" />
+                          <button 
+                            className="btn btn-primary btn-sm"
+                            onClick={() => {
+                              onQuickGenerate(draft.productId);
+                              onNavigate('approvals');
+                            }}
+                          >
+                            Review
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
 
@@ -472,78 +475,81 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="xora-card">
             <div className="xora-card-header">
               <div className="xora-card-title">
-                <Cpu size={18} style={{ color: 'var(--xora-info)' }} />
-                Active GPU Rendering Activity ({activeRenderingCount})
+                <Cpu size={18} style={{ color: '#b4e1fa' }} />
+                Active Rendering Queue ({activeRenderingCount})
               </div>
               <button className="btn btn-tertiary btn-sm" onClick={() => onNavigate('rendering')}>
-                View Full Queue <ArrowRight size={13} />
+                Rendering Operations <ArrowRight size={13} />
               </button>
             </div>
             <div className="xora-card-body" style={{ padding: 0 }}>
-              <div className="table-responsive">
-                <table className="xora-table">
-                  <thead>
-                    <tr>
-                      <th>Product</th>
-                      <th>Angle</th>
-                      <th>Status</th>
-                      <th>Progress</th>
-                      <th>Started</th>
-                      <th style={{ textAlign: 'right' }}>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {activeJobs.map((job) => (
-                      <tr key={job.id}>
-                        <td style={{ fontWeight: 600 }}>{job.productTitle}</td>
-                        <td style={{ fontSize: '12px', color: 'var(--xora-text-secondary)' }}>{job.angleName}</td>
-                        <td>
-                          <StatusBadge status={job.status} />
-                        </td>
-                        <td style={{ width: '140px' }}>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                            <div style={{
-                              width: '100%',
-                              height: '6px',
-                              backgroundColor: 'var(--xora-border-subtle)',
-                              borderRadius: 'var(--radius-full)',
-                              overflow: 'hidden'
-                            }}>
-                              <div style={{
-                                width: `${job.progress}%`,
-                                height: '100%',
-                                backgroundColor: 'var(--xora-primary)',
-                                transition: 'width 0.4s ease'
-                              }} />
-                            </div>
-                            <span style={{ fontSize: '11px', color: 'var(--xora-text-muted)' }}>{job.progress}%</span>
-                          </div>
-                        </td>
-                        <td style={{ fontSize: '12px', color: 'var(--xora-text-secondary)' }}>{job.createdAt}</td>
-                        <td style={{ textAlign: 'right' }}>
-                          <button 
-                            className="btn btn-secondary btn-sm"
-                            onClick={() => onNavigate('rendering')}
-                          >
-                            View
-                          </button>
-                        </td>
+              {activeJobs.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '24px 12px', color: 'var(--xora-text-muted)', fontSize: '13.5px' }}>
+                  No active rendering jobs currently in progress.
+                </div>
+              ) : (
+                <div className="table-responsive">
+                  <table className="xora-table">
+                    <thead>
+                      <tr>
+                        <th>Product</th>
+                        <th>Angle</th>
+                        <th>Status</th>
+                        <th>Progress</th>
+                        <th style={{ textAlign: 'right' }}>Action</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {activeJobs.map((job) => (
+                        <tr key={job.id}>
+                          <td style={{ fontWeight: 600 }}>{job.productTitle}</td>
+                          <td style={{ fontSize: '12px', color: 'var(--xora-text-secondary)' }}>{job.angleName}</td>
+                          <td>
+                            <StatusBadge status={job.status} />
+                          </td>
+                          <td style={{ width: '130px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                              <div style={{
+                                width: '100%',
+                                height: '6px',
+                                backgroundColor: 'var(--xora-border-subtle)',
+                                borderRadius: 'var(--radius-full)',
+                                overflow: 'hidden'
+                              }}>
+                                <div style={{
+                                  width: `${job.progress}%`,
+                                  height: '100%',
+                                  backgroundColor: '#00a47c',
+                                  transition: 'width 0.4s ease'
+                                }} />
+                              </div>
+                              <span style={{ fontSize: '11px', color: 'var(--xora-text-muted)' }}>{job.progress}%</span>
+                            </div>
+                          </td>
+                          <td style={{ textAlign: 'right' }}>
+                            <button 
+                              className="btn btn-secondary btn-sm"
+                              onClick={() => onNavigate('rendering')}
+                            >
+                              View
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Right Column: Recent Activity Feed & Quick Actions */}
+        {/* Right Column: Quick Operational Actions & Recent Logs */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          {/* Quick Operational Actions Bar */}
           <div className="xora-card">
             <div className="xora-card-header">
               <div className="xora-card-title">
-                <Zap size={18} style={{ color: 'var(--xora-primary)' }} />
+                <Zap size={18} style={{ color: '#00a47c' }} />
                 Quick Actions
               </div>
               <span className="badge badge-success" style={{ fontSize: '11px' }}>
@@ -556,14 +562,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 style={{ justifyContent: 'flex-start', width: '100%' }}
                 onClick={() => onNavigate('products')}
               >
-                <RefreshCw size={15} /> Sync Products
+                <RefreshCw size={15} /> Sync Products Catalog
               </button>
               <button 
                 className="btn btn-secondary" 
                 style={{ justifyContent: 'flex-start', width: '100%' }}
                 onClick={() => onNavigate('creatives')}
               >
-                <Sparkles size={15} /> Generate Creatives
+                <Sparkles size={15} /> Open Creative AI Studio
               </button>
               <button 
                 className="btn btn-secondary" 
@@ -577,7 +583,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 style={{ justifyContent: 'flex-start', width: '100%' }}
                 onClick={() => onNavigate('rendering')}
               >
-                <Cpu size={15} /> View Rendering Queue
+                <Cpu size={15} /> View Rendering Operations
               </button>
               <button 
                 className="btn btn-secondary" 
@@ -589,17 +595,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   onNavigate('videos');
                 }}
               >
-                <Film size={15} /> View Video Library
+                <Film size={15} /> View Video Library ({videosReadyCount})
               </button>
             </div>
           </div>
 
-          {/* Recent Activity Log Stream */}
+          {/* System Activity Log */}
           <div className="xora-card">
             <div className="xora-card-header">
               <div className="xora-card-title">
-                <Activity size={18} style={{ color: 'var(--xora-primary)' }} />
-                Recent Activity
+                <Activity size={18} style={{ color: '#00a47c' }} />
+                Recent System Activity
               </div>
             </div>
             <div className="xora-card-body">
@@ -611,9 +617,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       <div style={{
                         width: '28px',
                         height: '28px',
-                        borderRadius: 'var(--radius-input)',
-                        backgroundColor: 'var(--xora-bg-app)',
-                        border: '1px solid var(--xora-border)',
+                        borderRadius: '6px',
+                        backgroundColor: '#0c0d0e',
+                        border: '1px solid #303030',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -629,8 +635,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         <div style={{ fontSize: '12px', color: 'var(--xora-text-secondary)', marginTop: '2px' }}>
                           {evt.desc}
                         </div>
-                        <div style={{ fontSize: '11px', color: 'var(--xora-text-muted)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <Clock size={11} /> {evt.time}
+                        <div style={{ fontSize: '10.5px', color: 'var(--xora-text-muted)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <Clock size={10} /> {evt.time}
                         </div>
                       </div>
                     </div>
