@@ -2,37 +2,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  /* Color System */
-  --xora-primary: #008060;
-  --xora-primary-hover: #006e52;
-  --xora-primary-light: #e6f4f0;
-  --xora-primary-border: #b8e2d8;
+  /* Color System - Modern Neutral Slate/Zinc & Indigo Elevation */
+  --xora-primary: #6366f1; /* Indigo-500 */
+  --xora-primary-hover: #4f46e5; /* Indigo-600 */
+  --xora-primary-light: rgba(99, 102, 241, 0.12); /* Soft glowing pill bg */
+  --xora-primary-border: rgba(99, 102, 241, 0.35);
 
-  --xora-bg-app: #F6F6F7;
-  --xora-surface: #FFFFFF;
-  --xora-surface-hover: #F6F6F7;
+  --xora-bg-app: #090d16; /* Deep surface */
+  --xora-surface: #0f172a; /* Elevated surface / slate-900 */
+  --xora-surface-hover: #1e293b; /* slate-800 hover */
   
-  --xora-header-bg: #1F1F1F;
-  --xora-header-border: #2C3033;
-  --xora-header-text: #F6F6F7;
-  --xora-header-text-muted: #999F9E;
+  --xora-header-bg: rgba(15, 23, 42, 0.75); /* Elevated slate-900 with backdrop-blur */
+  --xora-header-border: #1e293b; /* border-slate-800 */
+  --xora-header-text: #f8fafc;
+  --xora-header-text-muted: #94a3b8;
 
-  --xora-text-primary: #202223;
-  --xora-text-secondary: #6D7175;
-  --xora-text-muted: #8C9196;
+  --xora-text-primary: #f8fafc; /* text-slate-50 */
+  --xora-text-secondary: #cbd5e1; /* text-slate-300 */
+  --xora-text-muted: #94a3b8; /* text-slate-400 */
 
-  --xora-border: #E1E3E5;
-  --xora-border-subtle: #EDEFEF;
+  --xora-border: #1e293b; /* border-slate-800 */
+  --xora-border-subtle: #334155; /* border-slate-700 */
 
-  --xora-critical: #D72C0D;
-  --xora-critical-light: #FBEAE8;
-  --xora-warning: #FFC453;
-  --xora-warning-light: #FFF8E6;
-  --xora-warning-text: #8A6100;
-  --xora-info: #2C6ECB;
-  --xora-info-light: #EBF2FA;
-  --xora-success: #008060;
-  --xora-success-light: #E6F4F0;
+  --xora-critical: #f43f5e; /* rose-500 */
+  --xora-critical-light: rgba(244, 63, 94, 0.12);
+  --xora-warning: #f59e0b; /* amber-500 */
+  --xora-warning-light: rgba(245, 158, 11, 0.12);
+  --xora-warning-text: #fbbf24;
+  --xora-info: #38bdf8; /* sky-400 */
+  --xora-info-light: rgba(56, 189, 248, 0.12);
+  --xora-success: #10b981; /* emerald-500 */
+  --xora-success-light: rgba(16, 185, 129, 0.12);
 
   /* Spacing Scale (4px base) */
   --space-1: 4px;
@@ -56,14 +56,14 @@
   --radius-full: 9999px;
 
   /* Restrained Elevation & Shadows */
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-modal: 0 4px 16px rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-modal: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
 
   /* Animation & Transitions */
   --transition-fast: 150ms ease;
-  --transition-normal: 200ms ease;
+  --transition-normal: 200ms ease-in-out;
 }
 
 /* Global Reset */
@@ -169,6 +169,8 @@ button, input, select, textarea {
   position: sticky;
   top: 0;
   z-index: 50;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .topbar-divider {
@@ -406,9 +408,10 @@ button, input, select, textarea {
   text-decoration: none;
   font-weight: 500;
   font-size: 13.5px;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition: all 200ms ease-in-out;
   cursor: pointer;
   position: relative;
+  border-left: 2px solid transparent;
 }
 
 .nav-item:hover {
@@ -418,24 +421,26 @@ button, input, select, textarea {
 
 .nav-item.active {
   background-color: var(--xora-primary-light);
-  color: var(--xora-primary);
+  color: #818cf8; /* indigo-400 */
   font-weight: 600;
+  border-left-color: var(--xora-primary);
 }
 
 .nav-item.active::before {
   content: '';
   position: absolute;
-  left: 0;
+  left: -2px;
   top: 6px;
   bottom: 6px;
   width: 3px;
   background-color: var(--xora-primary);
   border-radius: 0 3px 3px 0;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
 }
 
 .nav-counter {
   margin-left: auto;
-  background-color: var(--xora-bg-app);
+  background-color: var(--xora-surface-hover);
   color: var(--xora-text-secondary);
   font-size: 11px;
   font-weight: 600;
@@ -446,6 +451,31 @@ button, input, select, textarea {
 .nav-item.active .nav-counter {
   background-color: var(--xora-primary);
   color: white;
+}
+
+/* Accessible Status Badge Combo Layout Dot Animations */
+@keyframes pulseDot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.6;
+  }
+}
+
+@keyframes spinRing {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.status-dot-pulse {
+  animation: pulseDot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.status-spin {
+  animation: spinRing 1.2s linear infinite;
 }
 
 /* Card System */

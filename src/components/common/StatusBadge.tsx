@@ -45,142 +45,233 @@ interface StatusBadgeProps {
 }
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, customText }) => {
-  switch (status) {
-    case 'synced':
-      return (
-        <span className="badge badge-success">
-          <CheckCircle2 size={13} />
-          {customText || 'Synced'}
-        </span>
-      );
-    case 'eligible':
-      return (
-        <span className="badge badge-success">
-          <Sparkles size={13} />
-          {customText || 'Eligible'}
-        </span>
-      );
-    case 'ineligible':
-      return (
-        <span className="badge badge-neutral">
-          <XCircle size={13} />
-          {customText || 'Ineligible'}
-        </span>
-      );
-    case 'not_generated':
-      return (
-        <span className="badge badge-neutral">
-          <Clock size={13} />
-          {customText || 'Not Generated'}
-        </span>
-      );
-    case 'draft':
-      return (
-        <span className="badge badge-warning">
-          <Edit3 size={13} />
-          {customText || 'Draft'}
-        </span>
-      );
-    case 'needs_review':
-      return (
-        <span className="badge badge-warning">
-          <AlertCircle size={13} />
-          {customText || 'Needs Review'}
-        </span>
-      );
-    case 'approved':
-      return (
-        <span className="badge badge-success">
-          <Check size={13} />
-          {customText || 'Approved'}
-        </span>
-      );
-    case 'rejected':
-      return (
-        <span className="badge badge-critical">
-          <XCircle size={13} />
-          {customText || 'Rejected'}
-        </span>
-      );
-    case 'queued':
-      return (
-        <span className="badge badge-info">
-          <Clock size={13} />
-          {customText || 'Queued'}
-        </span>
-      );
-    case 'rendering':
-      return (
-        <span className="badge badge-info">
-          <Cpu size={13} className="spin" />
-          {customText || 'Rendering'}
-        </span>
-      );
-    case 'stitching':
-      return (
-        <span className="badge badge-info">
-          <Film size={13} />
-          {customText || 'Stitching'}
-        </span>
-      );
-    case 'completed':
-    case 'ready':
-      return (
-        <span className="badge badge-success">
-          <Video size={13} />
-          {customText || 'Completed'}
-        </span>
-      );
-    case 'pushed_to_shopify':
-      return (
-        <span className="badge badge-success">
-          <ExternalLink size={13} />
-          {customText || 'Pushed to Shopify'}
-        </span>
-      );
-    case 'failed':
-    case 'error':
-      return (
-        <span className="badge badge-critical">
-          <AlertCircle size={13} />
-          {customText || 'Failed'}
-        </span>
-      );
-    case 'cancelled':
-      return (
-        <span className="badge badge-neutral">
-          <XCircle size={13} />
-          {customText || 'Cancelled'}
-        </span>
-      );
-    case 'pending':
-      return (
-        <span className="badge badge-neutral">
-          <Clock size={13} />
-          {customText || 'Pending'}
-        </span>
-      );
-    case 'syncing':
-      return (
-        <span className="badge badge-info">
-          <RefreshCw size={13} className="spin" />
-          {customText || 'Syncing'}
-        </span>
-      );
-    case 'needs_images':
-    case 'unsupported_category':
-      return (
-        <span className="badge badge-warning">
-          <Image size={13} />
-          {customText || (status === 'unsupported_category' ? 'Unsupported Category' : 'Needs Hi-Res Images')}
-        </span>
-      );
-    default:
-      return (
-        <span className="badge badge-neutral">
-          <HelpCircle size={13} />
-          {customText || status}
-        </span>
-      );
-  }
+  // Config map for each status type
+  const getConfig = () => {
+    switch (status) {
+      // 1. Ready / Approved / Success / Synced (Emerald)
+      case 'synced':
+        return {
+          label: customText || 'Synced',
+          bg: 'rgba(16, 185, 129, 0.14)',
+          border: 'rgba(16, 185, 129, 0.35)',
+          color: '#34d399',
+          dotColor: '#10b981',
+          dotPulse: false,
+          Icon: CheckCircle2
+        };
+      case 'eligible':
+        return {
+          label: customText || 'Eligible',
+          bg: 'rgba(16, 185, 129, 0.14)',
+          border: 'rgba(16, 185, 129, 0.35)',
+          color: '#34d399',
+          dotColor: '#10b981',
+          dotPulse: false,
+          Icon: Sparkles
+        };
+      case 'approved':
+        return {
+          label: customText || 'Approved',
+          bg: 'rgba(16, 185, 129, 0.14)',
+          border: 'rgba(16, 185, 129, 0.35)',
+          color: '#34d399',
+          dotColor: '#10b981',
+          dotPulse: false,
+          Icon: Check
+        };
+      case 'completed':
+      case 'ready':
+        return {
+          label: customText || (status === 'ready' ? 'Ready' : 'Completed'),
+          bg: 'rgba(16, 185, 129, 0.14)',
+          border: 'rgba(16, 185, 129, 0.35)',
+          color: '#34d399',
+          dotColor: '#10b981',
+          dotPulse: false,
+          Icon: Video
+        };
+      case 'pushed_to_shopify':
+        return {
+          label: customText || 'Pushed to Shopify',
+          bg: 'rgba(16, 185, 129, 0.14)',
+          border: 'rgba(16, 185, 129, 0.35)',
+          color: '#34d399',
+          dotColor: '#10b981',
+          dotPulse: false,
+          Icon: ExternalLink
+        };
+
+      // 2. Pending / Queued / Draft / Review (Amber)
+      case 'pending':
+        return {
+          label: customText || 'Pending',
+          bg: 'rgba(245, 158, 11, 0.14)',
+          border: 'rgba(245, 158, 11, 0.35)',
+          color: '#fbbf24',
+          dotColor: '#f59e0b',
+          dotPulse: true,
+          Icon: Clock
+        };
+      case 'queued':
+        return {
+          label: customText || 'Queued',
+          bg: 'rgba(245, 158, 11, 0.14)',
+          border: 'rgba(245, 158, 11, 0.35)',
+          color: '#fbbf24',
+          dotColor: '#f59e0b',
+          dotPulse: true,
+          Icon: Clock
+        };
+      case 'draft':
+        return {
+          label: customText || 'Draft',
+          bg: 'rgba(245, 158, 11, 0.14)',
+          border: 'rgba(245, 158, 11, 0.35)',
+          color: '#fbbf24',
+          dotColor: '#f59e0b',
+          dotPulse: false,
+          Icon: Edit3
+        };
+      case 'needs_review':
+        return {
+          label: customText || 'Needs Review',
+          bg: 'rgba(245, 158, 11, 0.14)',
+          border: 'rgba(245, 158, 11, 0.35)',
+          color: '#fbbf24',
+          dotColor: '#f59e0b',
+          dotPulse: true,
+          Icon: AlertCircle
+        };
+      case 'needs_images':
+      case 'unsupported_category':
+        return {
+          label: customText || (status === 'unsupported_category' ? 'Unsupported Category' : 'Needs Hi-Res Images'),
+          bg: 'rgba(245, 158, 11, 0.14)',
+          border: 'rgba(245, 158, 11, 0.35)',
+          color: '#fbbf24',
+          dotColor: '#f59e0b',
+          dotPulse: false,
+          Icon: Image
+        };
+
+      // 3. Rendering / In Progress / Syncing (Indigo & Cyan)
+      case 'rendering':
+        return {
+          label: customText || 'Rendering',
+          bg: 'rgba(99, 102, 241, 0.14)',
+          border: 'rgba(99, 102, 241, 0.35)',
+          color: '#818cf8',
+          dotColor: '#38bdf8',
+          dotSpin: true,
+          Icon: Cpu
+        };
+      case 'stitching':
+        return {
+          label: customText || 'Stitching',
+          bg: 'rgba(99, 102, 241, 0.14)',
+          border: 'rgba(99, 102, 241, 0.35)',
+          color: '#818cf8',
+          dotColor: '#38bdf8',
+          dotSpin: true,
+          Icon: Film
+        };
+      case 'syncing':
+        return {
+          label: customText || 'Syncing',
+          bg: 'rgba(99, 102, 241, 0.14)',
+          border: 'rgba(99, 102, 241, 0.35)',
+          color: '#818cf8',
+          dotColor: '#38bdf8',
+          dotSpin: true,
+          Icon: RefreshCw
+        };
+
+      // 4. Failed / Rejected / Error (Rose)
+      case 'failed':
+      case 'error':
+        return {
+          label: customText || 'Failed',
+          bg: 'rgba(244, 63, 94, 0.14)',
+          border: 'rgba(244, 63, 94, 0.35)',
+          color: '#fb7185',
+          dotColor: '#f43f5e',
+          dotPulse: false,
+          Icon: AlertCircle
+        };
+      case 'rejected':
+        return {
+          label: customText || 'Rejected',
+          bg: 'rgba(244, 63, 94, 0.14)',
+          border: 'rgba(244, 63, 94, 0.35)',
+          color: '#fb7185',
+          dotColor: '#f43f5e',
+          dotPulse: false,
+          Icon: XCircle
+        };
+
+      // 5. Neutral Slate (Ineligible, Cancelled, Not Generated)
+      case 'ineligible':
+      case 'cancelled':
+      case 'not_generated':
+      default:
+        return {
+          label: customText || (status === 'ineligible' ? 'Ineligible' : status === 'cancelled' ? 'Cancelled' : status === 'not_generated' ? 'Not Generated' : status),
+          bg: 'rgba(148, 163, 184, 0.12)',
+          border: 'rgba(148, 163, 184, 0.25)',
+          color: '#cbd5e1',
+          dotColor: '#94a3b8',
+          dotPulse: false,
+          Icon: status === 'ineligible' || status === 'cancelled' ? XCircle : HelpCircle
+        };
+    }
+  };
+
+  const config = getConfig();
+  const IconComponent = config.Icon;
+
+  return (
+    <span
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '6px',
+        padding: '3px 9px',
+        borderRadius: '9999px',
+        backgroundColor: config.bg,
+        border: `1px solid ${config.border}`,
+        color: config.color,
+        fontSize: '12px',
+        fontWeight: 600,
+        lineHeight: 1.2,
+        letterSpacing: '0.2px',
+        whiteSpace: 'nowrap',
+        transition: 'all 150ms ease-in-out'
+      }}
+    >
+      {/* Soft animated status dot */}
+      <span
+        style={{
+          width: '6px',
+          height: '6px',
+          borderRadius: '50%',
+          backgroundColor: config.dotColor,
+          display: 'inline-block',
+          boxShadow: `0 0 6px ${config.dotColor}80`
+        }}
+        className={`${config.dotPulse ? 'status-dot-pulse' : ''} ${'dotSpin' in config && config.dotSpin ? 'status-spin' : ''}`}
+      />
+
+      {/* Semantic Icon */}
+      {IconComponent && (
+        <IconComponent 
+          size={12} 
+          style={{ flexShrink: 0 }} 
+          className={'dotSpin' in config && config.dotSpin ? 'status-spin' : ''}
+        />
+      )}
+
+      {/* Semantic Text Label */}
+      <span>{config.label}</span>
+    </span>
+  );
 };

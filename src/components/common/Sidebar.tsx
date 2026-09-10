@@ -147,8 +147,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     }
                   }}
                   href={`#${item.id}`}
+                  style={{
+                    transition: 'all 200ms ease-in-out',
+                  }}
                 >
-                  <Icon size={18} className="nav-icon" />
+                  <Icon 
+                    size={18} 
+                    className="nav-icon" 
+                    style={{ 
+                      color: isActive ? '#818cf8' : 'var(--xora-text-muted)',
+                      transition: 'color 200ms ease-in-out'
+                    }} 
+                  />
                   {!collapsedMode && <span className="nav-text">{item.label}</span>}
                   {!collapsedMode && typeof item.counter === 'number' && (
                     <span 

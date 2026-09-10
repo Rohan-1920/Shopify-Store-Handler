@@ -72,13 +72,13 @@ export const Header: React.FC<HeaderProps> = ({
               setShowProfileDropdown(false);
             }}
           >
-            <Store size={15} style={{ color: 'var(--xora-primary)' }} />
+            <Store size={15} style={{ color: '#818cf8' }} />
             <span>{storeContext.storeName}</span>
             <span style={{ 
               width: '6px', 
               height: '6px', 
               borderRadius: '50%', 
-              backgroundColor: 'var(--xora-primary)',
+              backgroundColor: '#10b981',
               display: 'inline-block'
             }} />
             <ChevronDown size={14} style={{ color: 'var(--xora-header-text-muted)' }} />
