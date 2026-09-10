@@ -12,7 +12,6 @@ import {
   CheckCircle2, 
   Zap, 
   ShieldAlert,
-  Store,
   Layers,
   Activity,
   Film,

@@ -15,7 +15,6 @@ export const ConnectShopifyModal: React.FC<ConnectShopifyModalProps> = ({
   initialDomain = 'acme-apparel.myshopify.com'
 }) => {
   const [storeDomain, setStoreDomain] = useState(initialDomain);
-  const [isConnecting, setIsConnecting] = useState(false);
   const [step, setStep] = useState<'input' | 'authorizing' | 'success'>('input');
   const [error, setError] = useState<string | null>(null);
 
@@ -32,13 +31,11 @@ export const ConnectShopifyModal: React.FC<ConnectShopifyModalProps> = ({
 
     setError(null);
     setStep('authorizing');
-    setIsConnecting(true);
 
     // Simulate Shopify OAuth handshake & API scope check
     setTimeout(() => {
       setStep('success');
       setTimeout(() => {
-        setIsConnecting(false);
         onConnect(cleanDomain);
       }, 1000);
     }, 1200);
