@@ -2,37 +2,50 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  /* Color System - Modern Neutral Slate/Zinc & Indigo Elevation */
-  --xora-primary: #6366f1; /* Indigo-500 */
-  --xora-primary-hover: #4f46e5; /* Indigo-600 */
-  --xora-primary-light: rgba(99, 102, 241, 0.12); /* Soft glowing pill bg */
-  --xora-primary-border: rgba(99, 102, 241, 0.35);
+  /* Official Shopify Polaris Color System Tokens */
+  --p-color-bg-app: #0c0d0e;
+  --p-color-bg-surface: #1a1a1a;
+  --p-color-bg-surface-hover: #252525;
+  --p-color-border: #303030;
+  --p-color-border-hover: #424242;
+  --p-color-primary: #008060;
+  --p-color-primary-hover: #00a47c;
+  --p-color-primary-surface: rgba(0, 128, 96, 0.12);
+  --p-color-primary-border: rgba(0, 128, 96, 0.3);
+  --p-color-text: #f1f1f1;
+  --p-color-text-subdued: #8c9196;
 
-  --xora-bg-app: #090d16; /* Deep surface */
-  --xora-surface: #0f172a; /* Elevated surface / slate-900 */
-  --xora-surface-hover: #1e293b; /* slate-800 hover */
+  /* Legacy Mapping for Complete Backward Compatibility */
+  --xora-primary: #008060;
+  --xora-primary-hover: #00a47c;
+  --xora-primary-light: rgba(0, 128, 96, 0.12);
+  --xora-primary-border: rgba(0, 128, 96, 0.3);
+
+  --xora-bg-app: #0c0d0e;
+  --xora-surface: #1a1a1a;
+  --xora-surface-hover: #252525;
   
-  --xora-header-bg: rgba(15, 23, 42, 0.75); /* Elevated slate-900 with backdrop-blur */
-  --xora-header-border: #1e293b; /* border-slate-800 */
-  --xora-header-text: #f8fafc;
-  --xora-header-text-muted: #94a3b8;
+  --xora-header-bg: #0c0d0e;
+  --xora-header-border: #303030;
+  --xora-header-text: #f1f1f1;
+  --xora-header-text-muted: #8c9196;
 
-  --xora-text-primary: #f8fafc; /* text-slate-50 */
-  --xora-text-secondary: #cbd5e1; /* text-slate-300 */
-  --xora-text-muted: #94a3b8; /* text-slate-400 */
+  --xora-text-primary: #f1f1f1;
+  --xora-text-secondary: #cccccc;
+  --xora-text-muted: #8c9196;
 
-  --xora-border: #1e293b; /* border-slate-800 */
-  --xora-border-subtle: #334155; /* border-slate-700 */
+  --xora-border: #303030;
+  --xora-border-subtle: #262626;
 
-  --xora-critical: #f43f5e; /* rose-500 */
-  --xora-critical-light: rgba(244, 63, 94, 0.12);
-  --xora-warning: #f59e0b; /* amber-500 */
-  --xora-warning-light: rgba(245, 158, 11, 0.12);
-  --xora-warning-text: #fbbf24;
-  --xora-info: #38bdf8; /* sky-400 */
-  --xora-info-light: rgba(56, 189, 248, 0.12);
-  --xora-success: #10b981; /* emerald-500 */
-  --xora-success-light: rgba(16, 185, 129, 0.12);
+  --xora-critical: #d82c0d;
+  --xora-critical-light: rgba(216, 44, 13, 0.12);
+  --xora-warning: #ffc453;
+  --xora-warning-light: rgba(255, 196, 83, 0.12);
+  --xora-warning-text: #ffc453;
+  --xora-info: #b4e1fa;
+  --xora-info-light: rgba(180, 225, 250, 0.12);
+  --xora-success: #008060;
+  --xora-success-light: rgba(0, 128, 96, 0.12);
 
   /* Spacing Scale (4px base) */
   --space-1: 4px;
@@ -46,20 +59,20 @@
   --space-12: 48px;
   --space-16: 64px;
 
-  /* Radius System */
-  --radius-input: 6px;
-  --radius-badge: 6px;
+  /* Polaris Radius Standards: 8px buttons/badges & 12px cards/modals */
+  --radius-input: 8px;
+  --radius-badge: 9999px;
   --radius-btn: 8px;
-  --radius-card: 8px;
+  --radius-card: 12px;
   --radius-panel: 12px;
   --radius-modal: 12px;
   --radius-full: 9999px;
 
   /* Restrained Elevation & Shadows */
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
-  --shadow-modal: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-modal: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.7);
 
   /* Animation & Transitions */
   --transition-fast: 150ms ease;
@@ -415,15 +428,15 @@ button, input, select, textarea {
 }
 
 .nav-item:hover {
-  background-color: var(--xora-surface-hover);
-  color: var(--xora-text-primary);
+  background-color: #252525;
+  color: var(--p-color-text);
 }
 
 .nav-item.active {
-  background-color: var(--xora-primary-light);
-  color: #818cf8; /* indigo-400 */
+  background-color: rgba(0, 128, 96, 0.15);
+  color: #00a47c;
   font-weight: 600;
-  border-left-color: var(--xora-primary);
+  border-left-color: #008060;
 }
 
 .nav-item.active::before {
@@ -433,9 +446,9 @@ button, input, select, textarea {
   top: 6px;
   bottom: 6px;
   width: 3px;
-  background-color: var(--xora-primary);
+  background-color: #008060;
   border-radius: 0 3px 3px 0;
-  box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+  box-shadow: 0 0 8px rgba(0, 128, 96, 0.6);
 }
 
 .nav-counter {
@@ -544,14 +557,16 @@ button, input, select, textarea {
 }
 
 .btn-primary {
-  background-color: var(--xora-primary);
-  color: white;
-  border-color: var(--xora-primary);
+  background-color: #008060;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-weight: 600;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: var(--xora-primary-hover);
-  border-color: var(--xora-primary-hover);
+  background-color: #00a47c;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 .btn-secondary {
@@ -840,7 +855,9 @@ button, input, select, textarea {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -849,12 +866,12 @@ button, input, select, textarea {
 }
 
 .modal-content {
-  background-color: var(--xora-surface);
+  background-color: #1a1a1a;
   border-radius: var(--radius-modal);
   box-shadow: var(--shadow-modal);
   width: 100%;
   max-width: 560px;
-  border: 1px solid var(--xora-border);
+  border: 1px solid #303030;
   overflow: hidden;
   animation: modalFadeIn var(--transition-fast);
 }
@@ -866,7 +883,7 @@ button, input, select, textarea {
 
 .modal-header {
   padding: var(--space-4) var(--space-5);
-  border-bottom: 1px solid var(--xora-border);
+  border-bottom: 1px solid #303030;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -878,8 +895,8 @@ button, input, select, textarea {
 
 .modal-footer {
   padding: var(--space-4) var(--space-5);
-  background-color: var(--xora-bg-app);
-  border-top: 1px solid var(--xora-border);
+  background-color: #0c0d0e;
+  border-top: 1px solid #303030;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -890,7 +907,9 @@ button, input, select, textarea {
 .drawer-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 90;
 }
 
@@ -900,8 +919,8 @@ button, input, select, textarea {
   right: 0;
   bottom: 0;
   width: 380px;
-  background-color: var(--xora-surface);
-  border-left: 1px solid var(--xora-border);
+  background-color: #1a1a1a;
+  border-left: 1px solid #303030;
   box-shadow: var(--shadow-modal);
   z-index: 95;
   display: flex;

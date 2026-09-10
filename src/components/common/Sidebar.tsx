@@ -155,7 +155,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     size={18} 
                     className="nav-icon" 
                     style={{ 
-                      color: isActive ? '#818cf8' : 'var(--xora-text-muted)',
+                      color: isActive ? '#00a47c' : 'var(--xora-text-muted)',
                       transition: 'color 200ms ease-in-out'
                     }} 
                   />

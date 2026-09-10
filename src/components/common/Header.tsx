@@ -55,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({
           <Menu size={20} />
         </button>
 
-        <div className="brand-badge">
+        <div className="brand-badge" style={{ backgroundColor: '#008060' }}>
           <Sparkles size={16} style={{ marginRight: '6px' }} />
           XORA
         </div>
@@ -72,13 +72,13 @@ export const Header: React.FC<HeaderProps> = ({
               setShowProfileDropdown(false);
             }}
           >
-            <Store size={15} style={{ color: '#818cf8' }} />
-            <span>{storeContext.storeName}</span>
+            <Store size={15} style={{ color: '#00a47c' }} />
+            <span style={{ color: '#ffffff', fontWeight: 600 }}>{storeContext.storeName}</span>
             <span style={{ 
               width: '6px', 
               height: '6px', 
               borderRadius: '50%', 
-              backgroundColor: '#10b981',
+              backgroundColor: '#00a47c',
               display: 'inline-block'
             }} />
             <ChevronDown size={14} style={{ color: 'var(--xora-header-text-muted)' }} />
@@ -184,10 +184,10 @@ export const Header: React.FC<HeaderProps> = ({
               alignItems: 'center',
               gap: '6px',
               padding: '6px 12px',
-              backgroundColor: 'rgba(0, 128, 96, 0.12)',
-              border: '1px solid rgba(0, 128, 96, 0.35)',
+              backgroundColor: 'rgba(0, 128, 96, 0.15)',
+              border: '1px solid rgba(0, 128, 96, 0.3)',
               borderRadius: 'var(--radius-full)',
-              color: '#34d399',
+              color: '#00a47c',
               fontSize: '12.5px',
               fontWeight: 600,
               cursor: 'pointer',
@@ -202,7 +202,7 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <Coins size={14} />
             <span>{creditBalance.available.toLocaleString()} credits</span>
-            <span style={{ fontSize: '10px', backgroundColor: 'rgba(52, 211, 153, 0.2)', padding: '2px 6px', borderRadius: '4px' }}>
+            <span style={{ fontSize: '10px', backgroundColor: 'rgba(0, 164, 124, 0.2)', padding: '2px 6px', borderRadius: '4px', color: '#00a47c' }}>
               Healthy
             </span>
           </button>

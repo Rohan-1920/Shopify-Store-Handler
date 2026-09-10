@@ -45,37 +45,37 @@ interface StatusBadgeProps {
 }
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, customText }) => {
-  // Config map for each status type
+  // Shopify Polaris Badge Configurations
   const getConfig = () => {
     switch (status) {
-      // 1. Ready / Approved / Success / Synced (Emerald)
+      // 1. Success / Done / Fulfilled (Shopify Polaris Green: #008060 / #00a47c)
       case 'synced':
         return {
           label: customText || 'Synced',
-          bg: 'rgba(16, 185, 129, 0.14)',
-          border: 'rgba(16, 185, 129, 0.35)',
-          color: '#34d399',
-          dotColor: '#10b981',
+          bg: 'rgba(0, 128, 96, 0.12)',
+          border: 'rgba(0, 128, 96, 0.3)',
+          color: '#00a47c',
+          dotColor: '#00a47c',
           dotPulse: false,
           Icon: CheckCircle2
         };
       case 'eligible':
         return {
           label: customText || 'Eligible',
-          bg: 'rgba(16, 185, 129, 0.14)',
-          border: 'rgba(16, 185, 129, 0.35)',
-          color: '#34d399',
-          dotColor: '#10b981',
+          bg: 'rgba(0, 128, 96, 0.12)',
+          border: 'rgba(0, 128, 96, 0.3)',
+          color: '#00a47c',
+          dotColor: '#00a47c',
           dotPulse: false,
           Icon: Sparkles
         };
       case 'approved':
         return {
           label: customText || 'Approved',
-          bg: 'rgba(16, 185, 129, 0.14)',
-          border: 'rgba(16, 185, 129, 0.35)',
-          color: '#34d399',
-          dotColor: '#10b981',
+          bg: 'rgba(0, 128, 96, 0.12)',
+          border: 'rgba(0, 128, 96, 0.3)',
+          color: '#00a47c',
+          dotColor: '#00a47c',
           dotPulse: false,
           Icon: Check
         };
@@ -83,62 +83,52 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, customText }) 
       case 'ready':
         return {
           label: customText || (status === 'ready' ? 'Ready' : 'Completed'),
-          bg: 'rgba(16, 185, 129, 0.14)',
-          border: 'rgba(16, 185, 129, 0.35)',
-          color: '#34d399',
-          dotColor: '#10b981',
+          bg: 'rgba(0, 128, 96, 0.12)',
+          border: 'rgba(0, 128, 96, 0.3)',
+          color: '#00a47c',
+          dotColor: '#00a47c',
           dotPulse: false,
           Icon: Video
         };
       case 'pushed_to_shopify':
         return {
           label: customText || 'Pushed to Shopify',
-          bg: 'rgba(16, 185, 129, 0.14)',
-          border: 'rgba(16, 185, 129, 0.35)',
-          color: '#34d399',
-          dotColor: '#10b981',
+          bg: 'rgba(0, 128, 96, 0.12)',
+          border: 'rgba(0, 128, 96, 0.3)',
+          color: '#00a47c',
+          dotColor: '#00a47c',
           dotPulse: false,
           Icon: ExternalLink
         };
 
-      // 2. Pending / Queued / Draft / Review (Amber)
+      // 2. Warning / Attention / In Review (Polaris Amber: #ffc453)
       case 'pending':
         return {
           label: customText || 'Pending',
-          bg: 'rgba(245, 158, 11, 0.14)',
-          border: 'rgba(245, 158, 11, 0.35)',
-          color: '#fbbf24',
-          dotColor: '#f59e0b',
+          bg: 'rgba(255, 196, 83, 0.12)',
+          border: 'rgba(255, 196, 83, 0.3)',
+          color: '#ffc453',
+          dotColor: '#ffc453',
           dotPulse: true,
           Icon: Clock
         };
       case 'queued':
         return {
           label: customText || 'Queued',
-          bg: 'rgba(245, 158, 11, 0.14)',
-          border: 'rgba(245, 158, 11, 0.35)',
-          color: '#fbbf24',
-          dotColor: '#f59e0b',
+          bg: 'rgba(255, 196, 83, 0.12)',
+          border: 'rgba(255, 196, 83, 0.3)',
+          color: '#ffc453',
+          dotColor: '#ffc453',
           dotPulse: true,
           Icon: Clock
-        };
-      case 'draft':
-        return {
-          label: customText || 'Draft',
-          bg: 'rgba(245, 158, 11, 0.14)',
-          border: 'rgba(245, 158, 11, 0.35)',
-          color: '#fbbf24',
-          dotColor: '#f59e0b',
-          dotPulse: false,
-          Icon: Edit3
         };
       case 'needs_review':
         return {
           label: customText || 'Needs Review',
-          bg: 'rgba(245, 158, 11, 0.14)',
-          border: 'rgba(245, 158, 11, 0.35)',
-          color: '#fbbf24',
-          dotColor: '#f59e0b',
+          bg: 'rgba(255, 196, 83, 0.12)',
+          border: 'rgba(255, 196, 83, 0.3)',
+          color: '#ffc453',
+          dotColor: '#ffc453',
           dotPulse: true,
           Icon: AlertCircle
         };
@@ -146,65 +136,75 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, customText }) 
       case 'unsupported_category':
         return {
           label: customText || (status === 'unsupported_category' ? 'Unsupported Category' : 'Needs Hi-Res Images'),
-          bg: 'rgba(245, 158, 11, 0.14)',
-          border: 'rgba(245, 158, 11, 0.35)',
-          color: '#fbbf24',
-          dotColor: '#f59e0b',
+          bg: 'rgba(255, 196, 83, 0.12)',
+          border: 'rgba(255, 196, 83, 0.3)',
+          color: '#ffc453',
+          dotColor: '#ffc453',
           dotPulse: false,
           Icon: Image
         };
 
-      // 3. Rendering / In Progress / Syncing (Indigo & Cyan)
+      // 3. Info / Draft / In Progress (Polaris Light Blue: #b4e1fa)
+      case 'draft':
+        return {
+          label: customText || 'Draft',
+          bg: 'rgba(180, 225, 250, 0.12)',
+          border: 'rgba(180, 225, 250, 0.3)',
+          color: '#b4e1fa',
+          dotColor: '#b4e1fa',
+          dotPulse: false,
+          Icon: Edit3
+        };
       case 'rendering':
         return {
           label: customText || 'Rendering',
-          bg: 'rgba(99, 102, 241, 0.14)',
-          border: 'rgba(99, 102, 241, 0.35)',
-          color: '#818cf8',
-          dotColor: '#38bdf8',
+          bg: 'rgba(180, 225, 250, 0.12)',
+          border: 'rgba(180, 225, 250, 0.3)',
+          color: '#b4e1fa',
+          dotColor: '#b4e1fa',
           dotSpin: true,
           Icon: Cpu
         };
       case 'stitching':
         return {
           label: customText || 'Stitching',
-          bg: 'rgba(99, 102, 241, 0.14)',
-          border: 'rgba(99, 102, 241, 0.35)',
-          color: '#818cf8',
-          dotColor: '#38bdf8',
+          bg: 'rgba(180, 225, 250, 0.12)',
+          border: 'rgba(180, 225, 250, 0.3)',
+          color: '#b4e1fa',
+          dotColor: '#b4e1fa',
           dotSpin: true,
           Icon: Film
         };
       case 'syncing':
         return {
           label: customText || 'Syncing',
-          bg: 'rgba(99, 102, 241, 0.14)',
-          border: 'rgba(99, 102, 241, 0.35)',
-          color: '#818cf8',
-          dotColor: '#38bdf8',
+          bg: 'rgba(180, 225, 250, 0.12)',
+          border: 'rgba(180, 225, 250, 0.3)',
+          color: '#b4e1fa',
+          dotColor: '#b4e1fa',
           dotSpin: true,
           Icon: RefreshCw
         };
 
-      // 4. Failed / Rejected / Error (Rose)
+      // 4. Critical / Failure / Unfulfilled (Polaris Red: #d82c0d / #f87171)
       case 'failed':
       case 'error':
         return {
           label: customText || 'Failed',
-          bg: 'rgba(244, 63, 94, 0.14)',
-          border: 'rgba(244, 63, 94, 0.35)',
-          color: '#fb7185',
-          dotColor: '#f43f5e',
+          bg: 'rgba(216, 44, 13, 0.12)',
+          border: 'rgba(216, 44, 13, 0.3)',
+          color: '#f87171',
+          dotColor: '#d82c0d',
           dotPulse: false,
           Icon: AlertCircle
         };
       case 'rejected':
         return {
           label: customText || 'Rejected',
-          bg: 'rgba(244, 63, 94, 0.14)',
-          border: 'rgba(244, 63, 94, 0.35)',
-          color: '#fb7185',
-          dotColor: '#f43f5e',
+          bg: 'rgba(216, 44, 13, 0.12)',
+          border: 'rgba(216, 44, 13, 0.3)',
+          color: '#f87171',
+          dotColor: '#d82c0d',
           dotPulse: false,
           Icon: XCircle
         };
@@ -216,10 +216,10 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, customText }) 
       default:
         return {
           label: customText || (status === 'ineligible' ? 'Ineligible' : status === 'cancelled' ? 'Cancelled' : status === 'not_generated' ? 'Not Generated' : status),
-          bg: 'rgba(148, 163, 184, 0.12)',
-          border: 'rgba(148, 163, 184, 0.25)',
-          color: '#cbd5e1',
-          dotColor: '#94a3b8',
+          bg: 'rgba(140, 145, 150, 0.12)',
+          border: 'rgba(140, 145, 150, 0.25)',
+          color: '#8c9196',
+          dotColor: '#8c9196',
           dotPulse: false,
           Icon: status === 'ineligible' || status === 'cancelled' ? XCircle : HelpCircle
         };
@@ -248,7 +248,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, customText }) 
         transition: 'all 150ms ease-in-out'
       }}
     >
-      {/* Soft animated status dot */}
+      {/* Soft status dot */}
       <span
         style={{
           width: '6px',
@@ -270,7 +270,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, customText }) 
         />
       )}
 
-      {/* Semantic Text Label */}
+      {/* Text Label */}
       <span>{config.label}</span>
     </span>
   );
